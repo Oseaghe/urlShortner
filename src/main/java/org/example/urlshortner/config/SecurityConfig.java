@@ -24,6 +24,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c->c
                         .requestMatchers(HttpMethod.POST, "/urlusers").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/shorten").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/{shortCode}").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
