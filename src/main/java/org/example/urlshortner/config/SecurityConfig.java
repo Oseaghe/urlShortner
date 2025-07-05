@@ -6,10 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
@@ -19,17 +17,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .sessionManagement(c->
-                        c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(c->c
-                        .requestMatchers(HttpMethod.POST, "/urlusers").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/shorten").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/{shortCode}").permitAll()
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {}) // enables CORS with your WebMvcConfigurer bean
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/urlusers").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/shorten").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/{shortCode}").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
-
     }
-
 }
