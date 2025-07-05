@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import org.example.urlshortner.entities.UrlShort;
 
-public interface UrlRepository extends JpaRepository <UrlShort, String> {
+public interface UrlRepository extends JpaRepository <UrlShort, Integer> {
 
-    Optional<UrlShort> findByShortCode(String code);
+    Optional<UrlShort> findByShortCode(String shortCode);
 
-    Optional<UrlShort> findByOriinalUrl(String originalUrl);
+    Optional<UrlShort> findByOriginalUrl(String originalUrl);
 
 }

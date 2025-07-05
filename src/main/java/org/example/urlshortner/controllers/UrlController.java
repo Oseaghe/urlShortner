@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 
 @AllArgsConstructor
@@ -19,13 +20,17 @@ public class UrlController {
     @PostMapping("/shorten")
     public ResponseEntity<UrlResponse> shortenUrl(@RequestBody UrlRequest request){
         UrlResponse response = urlService.shortenUrl(request);
+        System.out.printf("Generated short code: %s%n", response.getShortUrl());
         return ResponseEntity.created(URI.create(response.getShortUrl())).body(response);
     }
 
     @GetMapping("/{shortCode}")
     public ResponseEntity<?> redirect(@PathVariable String shortCode){
+
         return urlService.getOriginalUrl(shortCode)
-                .map(url -> ResponseEntity.status(302).location(URI.create(url)).build())
+                .map(url ->{ System.out.printf("Redirecting to: %s%n", url);
+                    return ResponseEntity.status(302).location(URI.create(url)).build();})
                 .orElse(ResponseEntity.notFound().build());
+
     }
 }

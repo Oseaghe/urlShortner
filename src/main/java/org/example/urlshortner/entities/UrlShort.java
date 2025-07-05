@@ -19,12 +19,12 @@ public class UrlShort {
     private Integer id;
 
     @Size(max = 255)
-    @Column(name = "originalUrl")
+    @Column(name = "original_url")
     private String originalUrl;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "ShortCode", nullable = false, unique = true)
+    @Column(name = "short_code", nullable = false, unique = true)
     private String shortCode;
 
 }

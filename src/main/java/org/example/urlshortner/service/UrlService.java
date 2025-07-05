@@ -29,6 +29,7 @@ public class UrlService {
                 .shortCode(shortCode)
                 .build();
         urlRepository.save(url);
+
         return new UrlResponse(baseUrl + shortCode);
     }
 
