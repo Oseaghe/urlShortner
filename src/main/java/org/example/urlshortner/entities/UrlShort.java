@@ -24,7 +24,7 @@ public class UrlShort {
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "ShortCode", nullable = false)
+    @Column(name = "ShortCode", nullable = false, unique = true)
     private String shortCode;
 
 }
