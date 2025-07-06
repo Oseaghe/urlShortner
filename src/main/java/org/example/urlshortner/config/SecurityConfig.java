@@ -24,6 +24,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/urlusers").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/shorten").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/{shortCode}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/{shortCode}").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
