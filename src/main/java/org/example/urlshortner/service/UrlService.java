@@ -30,7 +30,7 @@ public class UrlService {
                 .build();
         urlRepository.save(url);
 
-        return new UrlResponse(baseUrl + shortCode);
+        return new UrlResponse(baseUrl+ "api/" + shortCode);
     }
 
     public Optional<String> getOriginalUrl(String code){

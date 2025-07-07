@@ -24,7 +24,7 @@ public class UrlController {
         System.out.printf("Generated short code: %s%n", response.getShortUrl());
         return ResponseEntity.created(URI.create(response.getShortUrl())).body(response);
     }
-    @RequestMapping("/api")
+
     @GetMapping("/{shortCode}")
     public ResponseEntity<?> redirect(@PathVariable String shortCode){
 
