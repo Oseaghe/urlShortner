@@ -3,6 +3,9 @@ package org.example.urlshortner.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,8 +15,8 @@ import lombok.*;
 @Table(name = "userss")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name= "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "user_id")
     private Long id;
 
     @Column(name = "name")
@@ -24,5 +27,8 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UrlShort> urls = new ArrayList<>();
 
 }

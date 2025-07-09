@@ -14,8 +14,8 @@ import lombok.*;
 @Table(name = "url")
 public class UrlShort {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "url_id", nullable = false)
     private Integer id;
 
     @Size(max = 255)
@@ -26,5 +26,9 @@ public class UrlShort {
     @NotNull
     @Column(name = "short_code", nullable = false, unique = true)
     private String shortCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private User user;
 
 }

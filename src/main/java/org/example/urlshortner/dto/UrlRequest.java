@@ -6,4 +6,5 @@ import lombok.Data;
 public class UrlRequest {
 
     private String originalUrl;
+    private String email;
 }
