@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/urlusers?createDatabaseIfNotExist=true
     username: root
-    password: OseaghelikesWale1!
+    password: #yourpassword
 
 #Jpa Configuration
   jpa:
@@ -15,4 +15,4 @@ spring:
 
 # Logging level (optional but handy)
   jwt:
-    secret: ${JWT_SECRET}
+    secret: secret
