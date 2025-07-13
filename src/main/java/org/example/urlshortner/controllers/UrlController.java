@@ -25,6 +25,7 @@ public class UrlController {
 
     @PostMapping("/shorten")
     public ResponseEntity<UrlResponse> shortenUrl(@RequestBody UrlRequest request, Principal principal){
+        System.out.println("shortenUrl() CALLED");
         String username = principal.getName();
         UrlResponse response = urlService.shortenUrl(request, username);
         System.out.printf("Generated short code: %s%n", response.getShortUrl());

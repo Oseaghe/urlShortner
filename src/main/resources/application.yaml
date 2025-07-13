@@ -15,4 +15,4 @@ spring:
 
 # Logging level (optional but handy)
   jwt:
-    secret: secret
+    secret: ${JWT_SECRET}
