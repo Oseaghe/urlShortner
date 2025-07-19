@@ -3,11 +3,9 @@ package org.example.urlshortner.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -16,37 +14,38 @@ import java.util.function.Function;
 @Slf4j
 @Service
 public class JwtService {
-    @Value("${spring.jwt.secret}")
-    private String secret;
-    public String generateJwtToken(String email){
+    private final SecretKey signingKey;
+
+    public JwtService() {
+        this.signingKey = Jwts.SIG.HS256.key().build();
+    }
+
+    private SecretKey getSigningKey() {
+        return signingKey;
+    }
+
+    public String generateJwtToken(String email) {
         final long tokenExpiration = 86400;
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .signWith(getSigningKey())
                 .compact();
-
-
-
     }
 
-    public boolean validateJwtToken(String authToken){
-        try{
+    public boolean validateJwtToken(String authToken) {
+        try {
             var claims = Jwts.parser()
-                    .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                    .verifyWith(getSigningKey())
                     .build()
                     .parseSignedClaims(authToken)
                     .getPayload();
             return claims.getExpiration().after(new Date());
-
-
-        }
-        catch (JwtException ex) {
+        } catch (JwtException ex) {
             return false;
         }
-
-        }
+    }
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
         Claims claims = extractAllClaims(token);
@@ -54,13 +53,11 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
         return Jwts.parser()
-                .verifyWith(key)
+                .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
