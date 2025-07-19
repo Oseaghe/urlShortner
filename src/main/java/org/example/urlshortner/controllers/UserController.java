@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.urlshortner.dto.LoginRequest;
 import org.example.urlshortner.dto.RegisterUserRequest;
+import org.example.urlshortner.dto.UrlDto;
+import org.example.urlshortner.dto.UserDto;
 import org.example.urlshortner.entities.User;
 import org.example.urlshortner.mapper.UserMapper;
 import org.example.urlshortner.repositories.UserRepository;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -40,10 +43,13 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(Principal principal) {
-        String email = principal.getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserDto> getProfile(Principal principal) {
+        User user = userRepository.findByEmail(principal.getName()).orElseThrow();
+        List<UrlDto> urlDtos = user.getUrls().stream()
+                .map(url -> new UrlDto(url.getOriginalUrl(), url.getShortCode()))
+                .toList();
+
+        UserDto userDto = new UserDto(user.getId().intValue(), user.getEmail(), user.getName(), urlDtos);
+        return ResponseEntity.ok(userDto);
     }
 }

@@ -1,6 +1,7 @@
 package org.example.urlshortner.controllers;
 
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.urlshortner.dto.UrlRequest;
 import org.example.urlshortner.dto.UrlResponse;
@@ -23,7 +24,7 @@ public class UrlController {
     private final UrlRepository urlRepository;
 
     @PostMapping("/shorten")
-    public ResponseEntity<UrlResponse> shortenUrl(@RequestBody UrlRequest request, Principal principal){
+    public ResponseEntity<UrlResponse> shortenUrl(@Valid @RequestBody UrlRequest request, Principal principal){
         System.out.println("shortenUrl() CALLED");
         String username = principal.getName();
         UrlResponse response = urlService.shortenUrl(request, username);
